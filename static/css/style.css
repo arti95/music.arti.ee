@@ -1,0 +1,17 @@
+@media (min-width: 768px) {
+  .container {
+    max-width: 730px;
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+    #postInfo {
+        margin-top: 10px;
+    }
+}
+
+.points {
+    padding-left: 10px;
+    padding-right: 10px;
+}

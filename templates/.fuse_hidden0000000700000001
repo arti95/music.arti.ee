@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Title Page</title>
+		<!-- Scripts & Styles -->
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>-->
+		<script type="text/javascript" href="js/jQueryGetPost.js"></script>
+		<!-- Bootstrap CSS -->
+		<link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<h1>Music</h1>
+			<div class="row">
+				<div class="col-xs-9">
+						<input type="text" name="" id="input" class="form-control" value="" required="required" pattern="" title="" placeholder="Kirjuta siia loo nimi!">
+				</div>
+				<div class="col-xs-1">
+					<button type="button" class="btn btn-success" id="postInfo">Saada</button>
+				</div>
+			</div>
+			<table class="table table-condensed">
+		      <thead>
+		        <tr>
+		          <th></th>
+		          <th></th>
+		          <th></th>
+		          <th>Lugu</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		        <tr>
+		          <td><button>▲</button></td>
+		          <td>1</td>
+		          <td><button>▼</button></td>
+		          <td>lalalala lahe lugu</td>
+		        </tr>
+		        <tr>
+		          <td><button>▲</button></td>
+		          <td>1</td>
+		          <td><button>▼</button></td>
+		          <td>lalalala lahe lugu</td>
+		        </tr>
+		      </tbody>
+		    </table>
+		</div>
+		<!-- jQuery -->
+		<script src="https://code.jquery.com/jquery.js"></script>
+		<!-- Bootstrap JavaScript -->
+		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	</body>
+</html>
