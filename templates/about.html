@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1><a href="{{ url_for('index')}}">Music</a> - <a href="{{ url_for('about')}}">Teave</a>
+<div class="pull-right">
+  <a class="btn btn-link" href="{{ url_for('about')}}">Teave</a>
+</div></h1>
+
+<h1 id="mis-see-on-">Mis see on?</h1>
+<p><a href="http://music.arti.ee/">music.arti.ee</a> on leht kus on võimalik koolis vahetundide ajal lastavat muusikat hääletada ja lisada enda soovilugusi</p>
+<h1 id="autorid">Autorid</h1>
+<ul>
+<li>Arti Zirk <a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#97;&#x72;&#x74;&#105;&#46;&#x7a;&#x69;&#114;&#107;&#x40;&#x67;&#109;&#x61;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;">&#97;&#x72;&#x74;&#105;&#46;&#x7a;&#x69;&#114;&#107;&#x40;&#x67;&#109;&#x61;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;</a> - backend, frontend, idee</li>
+<li>Alar Riisalu - frontend</li>
+</ul>
+
+{% endblock %}

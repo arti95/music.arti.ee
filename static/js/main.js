@@ -1,14 +1,18 @@
 $(document).ready(function() {
     $('button.up-vote').click(function() {
-        console.log(this);
-        //$.post('/songs/', param1: 'value1', function(data) {
-        //});
-    })
+        var songId = $(this).data("songId");
+        $.ajax("/songs/"+songId, {data: {vote: "up"}, method: "PATCH"}).done(function (data) {
+            console.log(data);
+            $(".points." + songId).html(data["points"])
+        });
+
+    });
 
     $('button.down-vote').click(function() {
-        console.log(this);
-        //$.post('/path/to/file', param1: 'value1', function(data) {
-            /*optional stuff to do after success */
-        //});
-    })
+        var songId = $(this).data("songId");
+        $.ajax("/songs/"+songId, {data: {vote: "down"}, method: "PATCH"}).done(function (data) {
+            console.log(data);
+            $(".points." + songId).html(data["points"])
+        });
+    });
 });

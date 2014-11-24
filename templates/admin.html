@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1><a href="{{ url_for('index')}}">Music</a> - <a href="{{ url_for('admin')}}">Admin</a>
+<div class="pull-right">
+  <a href="{{ url_for('admin') }}" class="btn btn-link">Admin</a>
+  <a class="btn btn-link" href="{{ url_for('about')}}">Teave</a>
+</div></h1>
+
+<form class="form-signin" role="form">
+  <h2 class="form-signin-heading">Palun logi sisse</h2>
+  <input type="text" class="form-control" placeholder="Kasutaja" required autofocus>
+  <input type="password" class="form-control" placeholder="Parool" required>
+  <!--<div class="checkbox">
+    <label>
+      <input type="checkbox" value="remember-me"> Mäleta Mind
+    </label>
+  </div>-->
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sisene</button>
+</form>
+
+{% endblock %}

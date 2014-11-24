@@ -1,14 +1,25 @@
 {% extends "layout.html" %}
 {% block body %}
-  <h1>Music</h1>
+<!--header-->
+  <h1 class=""><a href="{{ url_for('index')}}">Music</a>
+  <div class="pull-right">
+    <a class="btn btn-link" href="{{ url_for('about')}}">Teave</a>
+  </div></h1>
+<!--/header-->
+<!--main-view-->
+  <!--add-song-->
   <div class="row">
+    <form  action="/songs/" method="post" id="add-song">
       <div class="col-sm-10">
-          <input type="text" id="input" class="form-control" placeholder="Kirjuta siia loo nimi!">
+          <input type="text" class="form-control" placeholder="Kirjuta siia loo nimi!" name="title" value="">
       </div>
       <div class="col-sm-2">
-          <button type="button" class="btn btn-success btn-block" id="postInfo">Lisa lugu</button>
+          <button type="submit" class="btn btn-success btn-block" value="home" name="redirect">Lisa lugu</button>
       </div>
+    </form>
   </div>
+  <!--/add-song-->
+  <!--song-list-->
   <table class="table table-condensed table-striped">
     <thead>
       <tr>
@@ -19,10 +30,16 @@
     <tbody>
       {% for song in songs %}
       <tr>
-        <td style="width:130px"><button class="btn up-vote {{ song._id }}">▲</button><span class="points {{ song._id }}"></span><button class="btn down-vote {{ song._id }}">▼</button></td>
-        <td>{{ song.title }}</td>
+        <td class="song-vote"><button class="btn up-vote" data-song-id="{{ song._id }}">▲</button><span class="points {{ song._id }}">{{ song.points }}</span><button class="btn down-vote" data-song-id="{{ song._id }}">▼</button></td>
+        <td class="song-title">{{ song.title }}</td>
+      </tr>
+      {% else %}
+       <tr>
+        <td class="song-vote"></td>
+        <td class="song-title">Lugusi pole</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+  <!--/song-list-->
 {% endblock %}
