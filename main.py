@@ -1,7 +1,9 @@
 from flask import Flask, render_template, redirect, url_for, Request
+from flask import make_response, request
 from flask.ext.restful import Api, reqparse, Resource
-from flask.ext.pymongo import PyMongo
+from flask.ext.pymongo import PyMongo, ObjectId
 from tools import jsonify
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -32,6 +34,7 @@ def about():
 class Song(Resource):
     vote_parser = reqparse.RequestParser()
     vote_parser.add_argument('vote', type=str, required=True)
+    vote_parser.add_argument('voter_id', type=str, location='cookies')
 
     def get(self, song_id):
         song = mongo.db.songs.find_one_or_404({'_id': song_id})
@@ -43,16 +46,62 @@ class Song(Resource):
 
     def patch(self, song_id):
         args = self.vote_parser.parse_args()
-        #song = mongo.db.songs.find_one_or_404({'_id': song_id})
-        if args["vote"] == "down":
-            r = mongo.db.songs.find_and_modify({"_id": song_id, 
-                "points":song["points"]}, {"$inc": {"points": -1}}, new=True)
-        elif args["vote"] == "up":
-            r = mongo.db.songs.find_and_modify({"_id": song_id, 
-                "points":song["points"]}, {"$inc": {"points": +1}}, new=True)
+        votes = {"up": +1,
+                "down": -1}
+        # check input
+        if args["vote"] not in votes:
+            return {"error": "wrong vote value"}, 400
+
+        # is the user a new user
+        if not args["voter_id"]:
+            # cast a vote
+            r = mongo.db.songs.find_and_modify({"_id": song_id}, 
+                {"$inc": {"points": votes[args["vote"]]}}, new=True)
+            # that song didnt exist
+            if not r:
+                return {"error": "Song does not exists"}, 404
+            # create a new user
+            voter = mongo.db.voters.insert({"voted_songs":{str(r["_id"]):args["vote"]}, 
+                    "created_at":datetime.now()})
+            # create a responce with user cookie
+            resp = make_response(jsonify(r))
+            resp.set_cookie("voter_id", value=str(voter), max_age=86400)
+        # user has voted before aka old user
         else:
-            r = song
-        return jsonify(r)
+            # load user
+            voter = mongo.db.voters.find_one({"_id":ObjectId(args["voter_id"])})
+            vote = votes[args["vote"]]
+            print(voter["voted_songs"])
+            print(song_id)
+            # if user has voted on that song before
+            if str(song_id) in voter["voted_songs"].keys():
+                if args["vote"] != voter["voted_songs"][str(song_id)]:
+                    # undo last vote and cast a new vote
+                    vote = -vote-vote
+                    update = mongo.db.voters.update({"_id":voter["_id"]}, 
+                        {"$set":{'voted_songs.'+str(song_id):args['vote']}})
+                    print("update set", update)
+                elif args["vote"] == voter["voted_songs"][str(song_id)]:
+                    # undo last vote
+                    vote = -vote
+                    update = mongo.db.voters.update({"_id":voter["_id"]}, 
+                        {"$unset":'voted_songs.'+str(song_id)})
+                    print("update unset", update)
+                # actually cast that vote
+                else:
+                    return {"error":"wtf"}, 500
+                r = mongo.db.songs.find_and_modify({"_id": song_id}, 
+                    {"$inc": {"points": vote}}, new=True)
+                if not r:
+                    # that song didnt exist
+                    return {"error": "Song does not exists"}, 404
+                return jsonify(r)
+
+            # user hasn't voted before
+            else:
+
+                return {"error": "not implemented"}, 500
+        return resp
 
 
 class SongList(Resource):
