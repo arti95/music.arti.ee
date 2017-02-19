@@ -45,6 +45,7 @@ class Song(Resource):
         return song
 
     def patch(self, song_id):
+        return {"error": "api disabled"}, 405
         args = self.vote_parser.parse_args()
         votes = {"up": +1,
                 "down": -1}
@@ -115,9 +116,10 @@ class SongList(Resource):
     def post(self):
         args = self.parser.parse_args()
         print(args)
-        song_id = mongo.db.songs.insert({"title": args["title"], "points": 1})
+        #song_id = mongo.db.songs.insert({"title": args["title"], "points": 1})
         if args["redirect"] == "home":
             return redirect(url_for("index"))
+        return {"error":"api disabled"}, 405
         return Song.get(self, song_id)
 
 
